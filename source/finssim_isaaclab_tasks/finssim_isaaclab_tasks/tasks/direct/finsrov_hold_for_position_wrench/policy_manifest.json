@@ -1,0 +1,18 @@
+{
+  "task_id": "FinsSim-FinsROV-HoldForPosition-Wrench-v0",
+  "observation_schema": "unity_hold_for_position_finsrov_v1",
+  "observation_dim": 16,
+  "action_schema": "finsrov_physical_wrench_sim7n_v2",
+  "action_dim": 6,
+  "action_order": ["surge=Fx", "sway=Fz", "heave=Fy", "roll=Mx", "pitch=Mz", "yaw=My"],
+  "action_limits": [19.528527, 18.415027, 22.501886, 3.863995, 3.079985, 7.080833],
+  "action_units": ["N", "N", "N", "N*m", "N*m", "N*m"],
+  "thruster_force_limits_n": {
+    "positive": [7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0],
+    "negative": [7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0]
+  },
+  "roll_pitch_mask_interface": "Default: env.enable_roll_pitch_moments=false; enable only with Hydra env.enable_roll_pitch_moments=true or runtime env.unwrapped.set_roll_pitch_moments_enabled(True)",
+  "thruster_order": ["V_LF", "V_LB", "V_RB", "V_RF", "H_LF", "H_LB", "H_RB", "H_RF"],
+  "runtime_compatible": true,
+  "note": "A normalized 6D policy action is allocated in N/N*m, converted into normalized per-thruster commands, and reconstructed by the symmetric +/-7 N actuator. Checkpoints must use this manifest's observation and action schemas."
+}

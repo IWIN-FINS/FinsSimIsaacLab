@@ -1,0 +1,3 @@
+# Install this file with IsaacLab's Python 3.12, never the Unity/SB3 venv.
+# The FinsROV SKRL PPO configurations and wrappers are tested against this version.
+skrl==2.1.0

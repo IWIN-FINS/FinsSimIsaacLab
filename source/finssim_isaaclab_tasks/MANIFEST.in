@@ -1,0 +1,2 @@
+recursive-include finssim_isaaclab_tasks/assets/warpauv/data *
+recursive-include finssim_isaaclab_tasks/tasks *.json

@@ -1,0 +1,13 @@
+{
+  "asset": "FinsROV_Fossen",
+  "source_unity_prefab": "Assets/Models/FinsROV/Calibrated/FinsROV_Fossen.prefab",
+  "source_profile": "Assets/Models/FinsROV/Hydrodynamics/FinsROV_HydrodynamicsProfile.asset",
+  "source_meshes": {
+    "render": {"path": "source/FinsROV_Model.fbx", "sha256": "86052cfe407ebd6c330039d2a45a3a6a4ed48ff18f7d609e7799f9853786c3be"},
+    "physics": {"path": "source/FinsROV_PhysicsHull.fbx", "sha256": "96c8b9dc5f12b99caf3b80dbae42602f441791a95294b23c55a3b606e469c60e"}
+  },
+  "body_frame": "Isaac Lab xyzw quaternion; task body axes [x forward, y left, z up]; FinsSim wrench [u,v,w,p,q,r]; Rigidbody CoM [0,0,-0.08] m and diagonal inertia [0.13154832,0.23185866,0.24651341] kg m^2 in this frame",
+  "units": "meter, kilogram, second, Newton, Newton-meter",
+  "conversion": "scripts/convert_finsrov_asset.py",
+  "task_frame_wrapper": "data/finsrov_task_frame.usda: raw FBX [x right,y up,z back], centimetres -> task [-z,-x,y], metres"
+}

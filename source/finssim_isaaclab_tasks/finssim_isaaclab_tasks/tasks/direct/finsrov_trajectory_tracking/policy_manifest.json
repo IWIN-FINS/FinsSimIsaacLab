@@ -1,0 +1,50 @@
+{
+  "task_id": "FinsSim-FinsROV-TrajectoryTracking-v0",
+  "observation_schema": "unity_t2_trajectory_tracking_v1",
+  "observation_dim": 30,
+  "action_dim": 8,
+  "action_schema": "finsrov_calibrated_normalized_thrust_v2",
+  "quaternion_order": "xyzw_internal",
+  "action_order": [
+    "Vertical1=V_LF",
+    "Vertical2=V_LB",
+    "Vertical3=V_RB",
+    "Vertical4=V_RF",
+    "Horizontal1=H_LF",
+    "Horizontal2=H_LB",
+    "Horizontal3=H_RB",
+    "Horizontal4=H_RF"
+  ],
+  "observation_order": [
+    "preview_offset_0_body_unity_xyz_norm",
+    "preview_offset_1_body_unity_xyz_norm",
+    "preview_offset_2_body_unity_xyz_norm",
+    "preview_offset_3_body_unity_xyz_norm",
+    "reference_velocity_body_unity_xyz_norm",
+    "linear_velocity_body_unity_xyz_norm",
+    "angular_velocity_body_unity_xyz_norm",
+    "body_up_unity_xyz",
+    "reference_tangent_yaw_sin_cos",
+    "episode_progress_sin_cos_1x_2x"
+  ],
+  "action_force_limits_n": {
+    "positive": [8.474877, 8.797188, 8.797188, 8.474877, 8.797188, 8.474877, 8.797188, 8.474877],
+    "negative_magnitude": [7.974983, 8.272793, 8.272793, 7.974983, 8.272793, 7.974983, 8.272793, 7.974983]
+  },
+  "trajectory_profiles": ["straight_line", "circle"],
+  "pool": {
+    "origin": "water_surface_center",
+    "length_x_m": 2.0,
+    "width_y_m": 1.0,
+    "depth_z_m": 1.0,
+    "wall_clearance_m": 0.05
+  },
+  "curriculum_stages": {
+    "0": "straight_line_only",
+    "1": "straight_line_or_circle_intermediate",
+    "2": "straight_line_or_circle_full_range"
+  },
+  "runtime_compatible": false,
+  "runtime_note": "Requires a dedicated IsaacLab trajectory30 .pt loader; Unity T2 .zip backends are separate.",
+  "note": "The task uses the current Isaac FinsROV equivalent-box hydrodynamics and calibrated asymmetric thruster limits."
+}
