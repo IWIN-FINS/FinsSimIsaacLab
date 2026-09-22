@@ -1,0 +1,9 @@
+{
+  "finssim_isaaclab_tasks.ros2.FinsRos2CommandAdapter": {
+    "version": 1,
+    "language": "python",
+    "description": "Fins eight-thruster validation, limit, timeout and reset adapter.",
+    "inputs": {"execIn": {"type": "execution"}},
+    "outputs": {"execOut": {"type": "execution"}}
+  }
+}

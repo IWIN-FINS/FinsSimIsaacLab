@@ -1,0 +1,43 @@
+#usda 1.0
+(
+    defaultPrim = "FinsROV"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+# This wrapper leaves the physical RigidBody frame at Isaac Lab's task frame:
+# [x forward, y left, z up].  The referenced FBX conversion is authored in
+# centimetres with raw axes [x right, y up, z back], so only its visual child
+# is scaled and reoriented:
+#     task = [-raw_z, -raw_x, raw_y].
+def Xform "FinsROV" (
+    prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+)
+{
+    # The Unity Rigidbody transform is the policy/visual frame.  Its centre of
+    # mass is (0, -0.08, 0) in Unity [forward, up, left], which is (0, 0,
+    # -0.08) in the task [forward, left, up] frame.  Isaac Lab's permanent
+    # wrench composer applies moments about this authored physical CoM.
+    float physics:mass = 12.11
+    point3f physics:centerOfMass = (0, 0, -0.08)
+
+    # These are the calibrated task-frame principal moments used by the
+    # equivalent-box hydrodynamics.  Authoring them here keeps PhysX's angular
+    # response in the same frame as the explicit thrust and water wrenches.
+    float3 physics:diagonalInertia = (0.13154832, 0.23185866, 0.24651341)
+    quatf physics:principalAxes = (1, 0, 0, 0)
+
+    def Xform "visual"
+    {
+        quatf xformOp:orient = (0.5, 0.5, -0.5, -0.5)
+        float3 xformOp:scale = (0.01, 0.01, 0.01)
+        uniform token[] xformOpOrder = ["xformOp:orient", "xformOp:scale"]
+
+        over "raw" (
+            delete apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+            prepend references = @finsrov.usd@</World>
+        )
+        {
+        }
+    }
+}

@@ -1,0 +1,9 @@
+{
+  "finssim_isaaclab_tasks.ros2.FinsRos2StateAdapter": {
+    "version": 1,
+    "language": "python",
+    "description": "Fins controller-coordinate truth adapter for native ROS2 publishers.",
+    "inputs": {"execIn": {"type": "execution"}},
+    "outputs": {"execOut": {"type": "execution"}}
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "task_id": "FinsSim-WarpAUV-Direct-v0",
+  "observation_schema": "warpauv_lab3_v0",
+  "observation_dim": 17,
+  "action_dim": 6,
+  "quaternion_order": "xyzw",
+  "runtime_compatible": false,
+  "note": "Copy this manifest beside every Lab 3 checkpoint. It must not be loaded by the legacy ROS runtime adapter."
+}

@@ -1,0 +1,197 @@
+#usda 1.0
+(
+    doc = """FinsROV native Isaac Sim ROS 2 Action Graph.
+
+This layer is intentionally the source of truth for DDS endpoints.  It uses
+only Isaac Sim's ROS2 Context, Publisher and Subscriber nodes; the task runner
+only binds simulator state and actuator actions to the named graph ports.
+"""
+)
+
+def "World"
+{
+    def OmniGraph "FinsROVROS2"
+    {
+        token evaluationMode = "Automatic"
+        token evaluator:type = "execution"
+        token fabricCacheBacking = "StageWithoutHistory"
+        int2 fileFormatVersion = (1, 9)
+        token pipelineStage = "pipelineStageSimulation"
+
+        def OmniGraphNode "Tick"
+        {
+            token node:type = "omni.graph.action.OnPlaybackTick"
+            int node:typeVersion = 2
+            custom uint outputs:tick (customData = { bool isExecution = 1 })
+        }
+
+        def OmniGraphNode "Context"
+        {
+            token node:type = "isaacsim.ros2.bridge.ROS2Context"
+            int node:typeVersion = 2
+            custom uint64 outputs:context
+        }
+
+        def OmniGraphNode "Clock"
+        {
+            custom uint64 inputs:context
+            uint64 inputs:context.connect = </World/FinsROVROS2/Context.outputs:context>
+            custom uint inputs:execIn (customData = { bool isExecution = 1 })
+            uint inputs:execIn.connect = </World/FinsROVROS2/Tick.outputs:tick>
+            custom double inputs:timeStamp
+            custom string inputs:topicName = "/clock"
+            token node:type = "isaacsim.ros2.bridge.ROS2PublishClock"
+            int node:typeVersion = 1
+        }
+
+        def OmniGraphNode "Imu"
+        {
+            custom uint64 inputs:context
+            uint64 inputs:context.connect = </World/FinsROVROS2/Context.outputs:context>
+            custom uint inputs:execIn (customData = { bool isExecution = 1 })
+            uint inputs:execIn.connect = </World/FinsROVROS2/Tick.outputs:tick>
+            custom string inputs:frameId = "finsrov/base_link"
+            custom quatd inputs:orientation
+            custom vector3d inputs:angularVelocity
+            custom vector3d inputs:linearAcceleration
+            custom bool inputs:publishOrientation = 1
+            custom bool inputs:publishAngularVelocity = 1
+            custom bool inputs:publishLinearAcceleration = 1
+            custom double inputs:timeStamp
+            custom string inputs:topicName = "/sim/finsrov/controller/imu"
+            token node:type = "isaacsim.ros2.bridge.ROS2PublishImu"
+            int node:typeVersion = 1
+        }
+
+        def OmniGraphNode "Odom"
+        {
+            custom uint64 inputs:context
+            uint64 inputs:context.connect = </World/FinsROVROS2/Context.outputs:context>
+            custom uint inputs:execIn (customData = { bool isExecution = 1 })
+            uint inputs:execIn.connect = </World/FinsROVROS2/Tick.outputs:tick>
+            custom string inputs:odomFrameId = "controller_world"
+            custom string inputs:chassisFrameId = "finsrov/base_link"
+            custom vector3d inputs:position
+            custom quatd inputs:orientation
+            custom vector3d inputs:linearVelocity
+            custom vector3d inputs:angularVelocity
+            custom bool inputs:publishRawVelocities = 1
+            custom double inputs:timeStamp
+            custom string inputs:topicName = "/sim/finsrov/ground_truth/odom"
+            token node:type = "isaacsim.ros2.bridge.ROS2PublishOdometry"
+            int node:typeVersion = 1
+        }
+
+        def OmniGraphNode "Pose"
+        {
+            custom uint64 inputs:context
+            uint64 inputs:context.connect = </World/FinsROVROS2/Context.outputs:context>
+            custom uint inputs:execIn (customData = { bool isExecution = 1 })
+            uint inputs:execIn.connect = </World/FinsROVROS2/Tick.outputs:tick>
+            custom string inputs:messagePackage = "geometry_msgs"
+            custom string inputs:messageSubfolder = "msg"
+            custom string inputs:messageName = "PoseWithCovarianceStamped"
+            custom string inputs:topicName = "/sim/finsrov/controller/pose"
+            custom token inputs:header:frame_id = "controller_world"
+            custom int inputs:header:stamp:sec
+            custom uint inputs:header:stamp:nanosec
+            custom double inputs:pose:pose:position:x
+            custom double inputs:pose:pose:position:y
+            custom double inputs:pose:pose:position:z
+            custom double inputs:pose:pose:orientation:x
+            custom double inputs:pose:pose:orientation:y
+            custom double inputs:pose:pose:orientation:z
+            custom double inputs:pose:pose:orientation:w
+            custom double[] inputs:pose:covariance = [0.000001, 0, 0, 0, 0, 0, 0, 0.000001, 0, 0, 0, 0, 0, 0, 0.000001, 0, 0, 0, 0, 0, 0, 0.000001, 0, 0, 0, 0, 0, 0, 0.000001, 0, 0, 0, 0, 0, 0, 0.000001]
+            token node:type = "isaacsim.ros2.bridge.ROS2Publisher"
+            int node:typeVersion = 1
+        }
+
+        def OmniGraphNode "Depth"
+        {
+            custom uint64 inputs:context
+            uint64 inputs:context.connect = </World/FinsROVROS2/Context.outputs:context>
+            custom uint inputs:execIn (customData = { bool isExecution = 1 })
+            uint inputs:execIn.connect = </World/FinsROVROS2/Tick.outputs:tick>
+            custom string inputs:messagePackage = "geometry_msgs"
+            custom string inputs:messageSubfolder = "msg"
+            custom string inputs:messageName = "PoseWithCovarianceStamped"
+            custom string inputs:topicName = "/sim/finsrov/controller/depth"
+            custom token inputs:header:frame_id = "controller_world"
+            custom int inputs:header:stamp:sec
+            custom uint inputs:header:stamp:nanosec
+            custom double inputs:pose:pose:position:x
+            custom double inputs:pose:pose:position:y
+            custom double inputs:pose:pose:position:z
+            custom double[] inputs:pose:covariance = [0, 0, 0, 0, 0, 0, 0, 0.000001, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            token node:type = "isaacsim.ros2.bridge.ROS2Publisher"
+            int node:typeVersion = 1
+        }
+
+        def OmniGraphNode "Dvl"
+        {
+            custom uint64 inputs:context
+            uint64 inputs:context.connect = </World/FinsROVROS2/Context.outputs:context>
+            custom uint inputs:execIn (customData = { bool isExecution = 1 })
+            uint inputs:execIn.connect = </World/FinsROVROS2/Tick.outputs:tick>
+            custom string inputs:messagePackage = "geometry_msgs"
+            custom string inputs:messageSubfolder = "msg"
+            custom string inputs:messageName = "TwistWithCovarianceStamped"
+            custom string inputs:topicName = "/sim/finsrov/controller/dvl"
+            custom token inputs:header:frame_id = "finsrov/base_link"
+            custom int inputs:header:stamp:sec
+            custom uint inputs:header:stamp:nanosec
+            custom double inputs:twist:twist:linear:x
+            custom double inputs:twist:twist:linear:y
+            custom double inputs:twist:twist:linear:z
+            custom double[] inputs:twist:covariance = [0.000001, 0, 0, 0, 0, 0, 0, 0.000001, 0, 0, 0, 0, 0, 0, 0.000001, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            token node:type = "isaacsim.ros2.bridge.ROS2Publisher"
+            int node:typeVersion = 1
+        }
+
+        def OmniGraphNode "Status"
+        {
+            custom uint64 inputs:context
+            uint64 inputs:context.connect = </World/FinsROVROS2/Context.outputs:context>
+            custom uint inputs:execIn (customData = { bool isExecution = 1 })
+            uint inputs:execIn.connect = </World/FinsROVROS2/Tick.outputs:tick>
+            custom string inputs:messagePackage = "std_msgs"
+            custom string inputs:messageSubfolder = "msg"
+            custom string inputs:messageName = "String"
+            custom string inputs:topicName = "/sim/finsrov/bridge/status"
+            custom string inputs:data
+            token node:type = "isaacsim.ros2.bridge.ROS2Publisher"
+            int node:typeVersion = 1
+        }
+
+        def OmniGraphNode "Thrusters"
+        {
+            custom uint64 inputs:context
+            uint64 inputs:context.connect = </World/FinsROVROS2/Context.outputs:context>
+            custom uint inputs:execIn (customData = { bool isExecution = 1 })
+            uint inputs:execIn.connect = </World/FinsROVROS2/Tick.outputs:tick>
+            custom string inputs:messagePackage = "std_msgs"
+            custom string inputs:messageSubfolder = "msg"
+            custom string inputs:messageName = "Float32MultiArray"
+            custom string inputs:topicName = "/sim/finsrov/thrusters_out"
+            custom float[] outputs:data
+            token node:type = "isaacsim.ros2.bridge.ROS2Subscriber"
+            int node:typeVersion = 1
+        }
+
+        def OmniGraphNode "Reset"
+        {
+            custom uint64 inputs:context
+            uint64 inputs:context.connect = </World/FinsROVROS2/Context.outputs:context>
+            custom uint inputs:execIn (customData = { bool isExecution = 1 })
+            uint inputs:execIn.connect = </World/FinsROVROS2/Tick.outputs:tick>
+            custom string inputs:messagePackage = "std_msgs"
+            custom string inputs:messageSubfolder = "msg"
+            custom string inputs:messageName = "Float32MultiArray"
+            custom string inputs:topicName = "/sim/finsrov/reset"
+            custom float[] outputs:data
+            token node:type = "isaacsim.ros2.bridge.ROS2Subscriber"
+            int node:typeVersion = 1
+        }
+    }
+}

@@ -1,0 +1,13 @@
+FinsSimIsaacLab
+Copyright 2026 IWIN-FINS and contributors
+
+FinsSim-owned source code and documentation are provided under the Apache
+License, Version 2.0. See LICENSE.
+
+This distribution includes or references components under separate terms.
+Notably, the pinned WarpAUV / isaac-auv-env reference is BSD-3-Clause.
+Isaac Lab and Isaac Sim are installed separately and retain their own terms.
+See THIRD_PARTY_NOTICES.md and component-level notices.
+
+FinsROV mesh/USD assets and the historical WarpAUV checkpoint are excluded
+from the repository-level Apache-2.0 claim pending rights-chain confirmation.

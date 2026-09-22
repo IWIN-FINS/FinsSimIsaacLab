@@ -1,0 +1,19 @@
+[package]
+version = "0.1.0"
+category = "isaaclab"
+readme = "README.md"
+title = "FinsSim Isaac Lab Tasks"
+author = "FinsSim"
+maintainer = "FinsSim"
+description = "FinsSim underwater robot-learning tasks for Isaac Lab 3."
+repository = "local://FinsSimIsaacLab"
+keywords = ["isaaclab", "underwater", "reinforcement-learning", "finsrov"]
+
+[dependencies]
+"isaaclab" = {}
+"isaaclab_rl" = {}
+"omni.graph.core" = {}
+"isaacsim.ros2.bridge" = {}
+
+[[python.module]]
+name = "finssim_isaaclab_tasks"

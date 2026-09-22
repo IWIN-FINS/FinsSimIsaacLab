@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use FinsSimIsaacLab in academic work, please cite it using this metadata."
+title: "FinsSimIsaacLab: Isaac Lab Tasks for Underwater Robot Learning"
+type: software
+authors:
+  - name: IWIN-FINS
+version: 0.1.0
+license: Apache-2.0
+abstract: >-
+  Isaac Lab 3 tasks, shared underwater physics, policy contracts, and runtime
+  adapters for FinsROV and WarpAUV underwater robot learning.
